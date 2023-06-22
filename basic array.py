@@ -26,8 +26,11 @@ class Array:
             if self.values[i] == value:
                 return i
         raise ValueError("Item not found in the Array.")
-    def sort(self):
-        self.is_sort(0, self.count - 1)
+    def sort(self,ascending = True):
+        if ascending:
+            self.is_sort(0, self.count - 1)
+        else:
+            self.is_sort_descending(0, self.count - 1)
     def is_sort(self, low, high):
         if low < high:
             pivot_index = self._partition(low, high)
@@ -38,6 +41,21 @@ class Array:
         i = low - 1
         for j in range(low, high):
             if self.values[j] <= pivot_value:
+                i += 1
+                self.values[i], self.values[j] = self.values[j], self.values[i]
+        self.values[i + 1], self.values[high] = self.values[high], self.values[i + 1]
+        return i + 1
+    def is_sort_descending(self, low, high):
+        if low < high:
+            pivot_index = self._partition_descending(low, high)
+            self._quicksort_descending(low, pivot_index - 1)
+            self._quicksort_descending(pivot_index + 1, high)
+
+    def _partition_descending(self, low, high):
+        pivot_value = self.values[high]
+        i = low - 1
+        for j in range(low, high):
+            if self.values[j] >= pivot_value:
                 i += 1
                 self.values[i], self.values[j] = self.values[j], self.values[i]
         self.values[i + 1], self.values[high] = self.values[high], self.values[i + 1]
