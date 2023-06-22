@@ -48,8 +48,8 @@ class Array:
     def is_sort_descending(self, low, high):
         if low < high:
             pivot_index = self._partition_descending(low, high)
-            self._quicksort_descending(low, pivot_index - 1)
-            self._quicksort_descending(pivot_index + 1, high)
+            self.is_sort_descending(low, pivot_index - 1)
+            self.is_sort_descending(pivot_index + 1, high)
 
     def _partition_descending(self, low, high):
         pivot_value = self.values[high]
