@@ -1,32 +1,64 @@
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
 class Array:
     def __init__(self):
-        self.values = []
+        self.head = None
+        self.tail = None
         self.count = 0
     def push(self, value):
-        self.values = self.values + [value]
+        new_node = Node(value)
+        if self.head is None:
+            self.head = new_node
+            self.tail = new_node
+        else:
+            self.tail.next = new_node
+            self.tail = new_node
         self.count += 1
     def pop(self):
         if self.is_empty():
             raise IndexError("Cannot pop from an Empty Array.")
-        value = self.values[-1]
-        self.values = self.values[:-1]
+        value = self.tail.value
+        if self.head == self.tail:
+            self.head = None
+            self.tail = None
+        else:
+            current = self.head
+            while current.next != self.tail:
+                current = current.next
+            current.next = None
+            self.tail = current
         self.count -= 1
         return value
     def is_empty(self):
         return self.count == 0
     def get_elements(self):
-        return self.values
-    def search (self,value):
-        for i in range(self.count):
-            if self.values[i] == value:
-                return i
+        elements = []
+        current = self.head
+        while current is not None:
+            elements.append(current.value)
+            current = current.next
+        return elements
+    def search(self, value):
+        current = self.head
+        index = 0
+        while current is not None:
+            if current.value == value:
+                return index
+            current = current.next
+            index += 1
         raise ValueError("Item not found in the Array.")
-    def index (self,value):
-        for i in range(self.count):
-            if self.values[i] == value:
-                return i
+    def index(self, value):
+        current = self.head
+        index = 0
+        while current is not None:
+            if current.value == value:
+                return index
+            current = current.next
+            index += 1
         raise ValueError("Item not found in the Array.")
-    def sort(self,ascending = True):
+    def sort(self, ascending=True):
         if ascending:
             self.is_sort(0, self.count - 1)
         else:
@@ -37,29 +69,27 @@ class Array:
             self.is_sort(low, pivot_index - 1)
             self.is_sort(pivot_index + 1, high)
     def _partition(self, low, high):
-        pivot_value = self.values[high]
+        pivot_value = self._get_node_value(high)
         i = low - 1
         for j in range(low, high):
-            if self.values[j] <= pivot_value:
+            if self._get_node_value(j) <= pivot_value:
                 i += 1
-                self.values[i], self.values[j] = self.values[j], self.values[i]
-        self.values[i + 1], self.values[high] = self.values[high], self.values[i + 1]
+                self._swap_nodes(i, j)
+        self._swap_nodes(i + 1, high)
         return i + 1
     def is_sort_descending(self, low, high):
         if low < high:
             pivot_index = self._partition_descending(low, high)
             self.is_sort_descending(low, pivot_index - 1)
             self.is_sort_descending(pivot_index + 1, high)
-
     def _partition_descending(self, low, high):
-        pivot_value = self.values[high]
+        pivot_value = self._get_node_value(high)
         i = low - 1
         for j in range(low, high):
-            if self.values[j] >= pivot_value:
+            if self._get_node_value(j) >= pivot_value:
                 i += 1
-                self.values[i], self.values[j] = self.values[j], self.values[i]
-        self.values[i + 1], self.values[high] = self.values[high], self.values[i + 1]
-        return i + 1
+                self._swap_nodes(i, j)
+        self._swap_nodes(i + 1
     def length(self):
         return self.count
 
