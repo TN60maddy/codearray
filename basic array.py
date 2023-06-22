@@ -27,7 +27,7 @@ class Array:
                 return i
         raise ValueError("Item not found in the Array.")
     def sort(self):
-        self.is_sort(0, self.size - 1)
+        self.is_sort(0, self.count - 1)
     def is_sort(self, low, high):
         if low < high:
             pivot_index = self._partition(low, high)
