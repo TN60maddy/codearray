@@ -1,3 +1,4 @@
+from basic_array import Array
 my_array = Array()
 my_array.push(40)
 my_array.push(26)
